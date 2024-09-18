@@ -1,0 +1,13 @@
+SELECT 
+EXTRACT(month from current_m.event_date) as month_1 , 
+COUNT(DISTINCT user_id) as active_users
+FROM user_actions as current_m
+where EXISTS 
+(
+SELECT last_m.user_id 
+from user_actions as last_m
+WHERE last_m.user_id = current_m.user_id and
+EXTRACT(month from last_m.event_date) = 6
+)
+and EXTRACT(month from current_m.event_date) = 7
+GROUP BY month_1
